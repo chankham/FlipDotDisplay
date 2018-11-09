@@ -1,2 +1,2 @@
 # FlipDotDisplay
-Code for the flip dot display
+Code for flip dot display
