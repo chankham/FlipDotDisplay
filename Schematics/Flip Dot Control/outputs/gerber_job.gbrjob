@@ -1,0 +1,13 @@
+G04 Gerber job file.*
+%TF.FileFunction,JobInfo*%
+%TF.GenerationSoftware,Autodesk,EAGLE,9.1.3*%
+%TF.CreationDate,2018-09-12T01:24:37Z*%
+%TF.Part,Single*%
+%MOMM*%
+%TJ.B_Owner,Satej Mhatre <satej.mhatre@mavs.uta.edu>*%
+%TJ.B_ID,FlipDotModule*%
+%TJ.B_LayerNum,2*%
+%TJ.B_Thickness,1.570000*%
+%TJ.B_Size_X,147.300000*%
+%TJ.B_Size_Y,100.000000*%
+M02*
