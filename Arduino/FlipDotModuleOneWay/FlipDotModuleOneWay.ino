@@ -20,7 +20,7 @@ void loop() {
   // put your main code here, to run repeatedly:
   for(int i=0; i< 50; i+=1){
     msr.set_shift(i);
-    delay(1000);
+    delay(800);
     msr.clear_shift(i);
   }
 }

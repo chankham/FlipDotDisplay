@@ -23,7 +23,7 @@ void loop() {
   // Prepare to turn on pin 5.
   // Pin 5 is still low/off.
   //for(int i = 0; i <= 16; i+=2){
-  int x = 0;
+  int x = 24;
   msr.set(x);
 
   // Shift data out, with appropriate latches.
