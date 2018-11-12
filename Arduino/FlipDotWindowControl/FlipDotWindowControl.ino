@@ -16,62 +16,59 @@ int current[75];
 int receive[75];
 int id;
 
-void setModule(int x[25], int modNum){
-  int count = (modNum-1)*(50) ;
-  const int changeAtATime = 7;
-  int change[changeAtATime];
-  int changeCount = 0;
-
-  for(int i=0; i<changeAtATime; ++i)
-    change[i] = 0;
- //Serial.println("Displaying:");
+void Display(int x[25]){
+  Serial.println("\n\nDisplaying:");
     for(int j=0; j < 25; j++){
       if(j%5 == 0)
-        //Serial.println("");
-      //Serial.print(x[j]);
-    //  Serial.print(' ');
+        Serial.println("");
+      Serial.print(x[j]);
+      Serial.print(' ');
     }
-  //  Serial.println("");
+}
+
+void setModule(int x[25], int modNum){
+  int count = (modNum-1)*(50) ;
+  const int changeAtATime = 5;
+  int change[changeAtATime];
+  int changeCount = 0;
+  Display(x);
+  for(int i=0; i<changeAtATime; ++i)
+    change[i] = 0;
+    
   for (int i = 0; i < 25; ++i){
       if(x[i] && !current[count]){
-//          Serial.print("Changing Dot ");
-//          Serial.println(i+1);
-//          Serial.print("Count: ");
-//          Serial.println(count+1);
           current[count]=x[i];
       
           change[changeCount++] = count+1;
-      
       }
         
       if(!x[i] && current[count]){
-//          Serial.print("Toggling Dot ");
-//          Serial.println(i+1);
-//           Serial.print("Count: ");
-//          Serial.println(count);
-
           change[changeCount++] = count;
 
           current[count]=x[i];
-   
-          
       }
       if(changeCount == changeAtATime || i == 24){
-      
+        int p = 0;
+        int inter[2] = {700, 300};
+      while(p < 2){
         for(int j=0; j < changeCount; ++j){
           //Serial.print("jjjChanging Dot ");
           //Serial.println(change[j]);
             msr.set_shift(change[j]);
         }
-        delay(750);
+        delay(inter[p]);
         for(int j=0; j<changeCount; ++j){
             msr.clear_shift(change[j]);
         }
-        for(int j=0; j<changeAtATime; ++j)
-            change[j] = 0;
+        delay(200);
         //Serial.print("ChangeCount: ");
         //Serial.println(changeCount);
-        changeCount = 0;
+        p++;
+      }
+      for(int j=0; j<changeAtATime; ++j)
+            change[j] = 0;
+      p=0;
+      changeCount = 0;
       }
         
       count+=2;
@@ -97,19 +94,19 @@ void setup ()
     pinMode (clockPin, OUTPUT);
     pinMode (dataPin, OUTPUT);
     Serial.begin(9600);
-    //Serial.println("Current:\n");
+    Serial.println("Current:\n");
     for(int i = 0; i < 75; ++i){
       current[i] = 1;
-//      if(i%5 == 0 || i%25 == 0)
-//        Serial.println("");
-//      Serial.print(current[i]);
-//      Serial.print(' ');
+      if(i%5 == 0 || i%25 == 0)
+        Serial.println("");
+      Serial.print(current[i]);
+      Serial.print(' ');
       
     }
 
     id = 1;
     
-    setWindow(current);
+    //setWindow(current);
 }
 
 int x[25] =    
@@ -181,20 +178,20 @@ void error(){
 void loop ()
 {
   
-  if(Serial.available()>0){
-    
-    incoming = Serial.readString();
-    Serial.println(incoming);
-    if(id == incoming[1]){
-      for(int i = 0; i < 75; ++i)
-        receive[i] = incoming[i+3];
-       if(incoming[78] != '#')
-        error();
-       else
-        setWindow(receive);
-      digitalWrite(12, !digitalRead(12));
-    }
-  }
+//  if(Serial.available()>0){
+//    
+////    incoming = Serial.readString();
+////    Serial.println(incoming);
+////    if(id == incoming[1]){
+////      for(int i = 0; i < 75; ++i)
+////        receive[i] = incoming[i+3];
+////       if(incoming[78] != '#')
+////        error();
+////       else
+////        setWindow(receive);
+////      digitalWrite(12, !digitalRead(12));
+////    }
+//  }
   setModule(x, 1);
   setModule(h, 1);
   setModule(e, 1);
