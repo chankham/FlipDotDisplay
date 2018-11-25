@@ -7,7 +7,7 @@ int dataPin = 12;
 // How many 8 bit shift registers we're talking to.
 // Two 8 bit registers can host 16 individually
 // addressable binary outputs.
-int numberOfRegisters = 7;
+int numberOfRegisters = 21;
 
 // Setup group of shift registers and name it `msr`.
 // All outputs are initialized to low/off.
@@ -17,20 +17,23 @@ void setup() {
   pinMode(latchPin, OUTPUT);
   pinMode(clockPin, OUTPUT);
   pinMode(dataPin, OUTPUT);
+  Serial.begin(9600);
 }
-
+ int dotnum = 51;
+ int x = (dotnum*2 + 6*(int)((dotnum>25)?((dotnum>50)?(2):1):0)) - 2;
+  
 void loop() {
   // Prepare to turn on pin 5.
   // Pin 5 is still low/off.
   //for(int i = 0; i <= 16; i+=2){
-  int x = 24;
+ Serial.println(x);
   msr.set(x);
 
   // Shift data out, with appropriate latches.
   // Pin 5 is now high/on.
   msr.shift();
 
-  delay(800);
+  delay(500);
 
   // Turn pin 5 back off.
   msr.clear(x);
@@ -42,11 +45,13 @@ void loop() {
   // Pin 5 is now high/on.
   msr.shift();
 
-  delay(800);
+  delay(500);
 
   // Turn pin 5 back off.
   msr.clear(x+1);
   msr.shift();
+  //delay(5000);
+  //x+=2;
   //}
 
 //
