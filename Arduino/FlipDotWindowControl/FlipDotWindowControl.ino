@@ -40,16 +40,16 @@ void setModule(int x[25], int modNum) {
   const int changeAtATime = 5;
   int change[changeAtATime];
   int changeCount = 0;
-  Display(x);
+  //Display(x);
   for (int i = 0; i < changeAtATime; ++i)
     change[i] = 0;
 
   for (int i = 0; i < 25; ++i) {
-    Serial.print("Checking Dot, Curr d: ");
+    //Serial.print("Checking Dot, Curr d: ");
     int c = getCurrent(count, modNum);
-    Serial.print(c);
-    Serial.print(" ");
-    Serial.println(count);
+//    Serial.print(c);
+//    Serial.print(" ");
+//    Serial.println(count);
     if (x[i] && !current[getCurrent(count, modNum)]) {
       current[getCurrent(count, modNum)] = x[i];
 
@@ -74,7 +74,7 @@ void setModule(int x[25], int modNum) {
           msr.clear_shift(change[j]);
         }
         delay(50);
-        Serial.print("jjjChanging Dot ");
+        //Serial.print("jjjChanging Dot ");
         //Serial.println(change[j]);
         //        Serial.print("ChangeCount: ");
         //        Serial.println(changeCount);
@@ -89,8 +89,8 @@ void setModule(int x[25], int modNum) {
     count += 2;
 
   }
-  Serial.println("Displayed:\n");
-  Display(x);
+  //Serial.println("Displayed:\n");
+  //Display(x);
   //delay(0);
 }
 
@@ -103,27 +103,6 @@ void setWindow(int c[75]) {
     setModule(arr, i + 1);
     count += 25;
   }
-}
-
-void setup ()
-{
-  pinMode (latchPin, OUTPUT);
-  pinMode (clockPin, OUTPUT);
-  pinMode (dataPin, OUTPUT);
-  Serial.begin(9600);
-  Serial.println("Current:\n");
-  for (int i = 0; i < 75; ++i) {
-    current[i] = 1;
-    if (i % 5 == 0 || i % 25 == 0)
-      Serial.println("");
-    Serial.print(current[i]);
-    Serial.print(' ');
-
-  }
-
-  id = 1;
-
-  //setWindow(current);
 }
 
 int x[25] =
@@ -333,11 +312,11 @@ int ten[25] =
 };
 
 int eleven[25] =
-{ 1, 0, 1, 0, 1,
-  1, 0, 1, 0, 1,
-  1, 0, 1, 0, 1,
-  1, 0, 1, 0, 1,
-  1, 0, 1, 0, 1
+{ 0, 1, 0, 1, 0,
+  0, 1, 0, 1, 0,
+  0, 1, 0, 1, 0,
+  0, 1, 0, 1, 0,
+  0, 1, 0, 1, 0
 };
 
 
@@ -421,7 +400,7 @@ void toggleSecond() {
 
 void arduinoClock() {
   unsigned long time1 = millis();
-  long curr = 1258;
+  long curr = 906;
   while (1) {
     //toggleSecond();
     if ( millis() - time1 >= 1000) {
@@ -458,7 +437,7 @@ void helloWorld() {
 }
 
 
-void clearModule() {
+void clearModules() {
   setModule(x, 1);
   setModule(x, 2);
   setModule(x, 3);
@@ -490,8 +469,9 @@ void readStdString(){
 void readIntClock(){
   if (Serial.available() > 0) {
         long incoming = Serial.parseInt();
-        Serial.println(incoming);
         displayTime(incoming);
+
+        Serial.println(incoming);
   }
 }
 
@@ -550,16 +530,38 @@ void animation() {
   setModule(x, 3);
 }
 
+
+void setup ()
+{
+  pinMode (latchPin, OUTPUT);
+  pinMode (clockPin, OUTPUT);
+  pinMode (dataPin, OUTPUT);
+  Serial.begin(9600);
+  //Serial.println("Current:\n");
+  for (int i = 0; i < 75; ++i) {
+    current[i] = 1;
+    //if (i % 5 == 0 || i % 25 == 0)
+      //Serial.println("");
+    //Serial.print(current[i]);
+    //Serial.print(' ');
+
+  }
+
+  id = 1;
+  clearModules();
+  //setWindow(current);
+}
+
 void loop ()
 {
 
-  raspPi();
-  //  arduinoClock();
-  //  clearModule();
-  //  setAll();
+  //raspPi();
+    arduinoClock();
+    //clearModules();
+    //setAll();
   //  helloWorld();
 
-  Serial.print("Done!!!");
+  //S
   //  while (1);
 }
 

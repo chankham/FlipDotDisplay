@@ -19,7 +19,7 @@ void setup() {
   pinMode(dataPin, OUTPUT);
   Serial.begin(9600);
 }
- int dotnum = 51;
+ int dotnum = 56;
  int x = (dotnum*2 + 6*(int)((dotnum>25)?((dotnum>50)?(2):1):0)) - 2;
   
 void loop() {
@@ -33,7 +33,7 @@ void loop() {
   // Pin 5 is now high/on.
   msr.shift();
 
-  delay(500);
+  delay(1500);
 
   // Turn pin 5 back off.
   msr.clear(x);
@@ -45,13 +45,13 @@ void loop() {
   // Pin 5 is now high/on.
   msr.shift();
 
-  delay(500);
+  delay(1500);
 
   // Turn pin 5 back off.
   msr.clear(x+1);
   msr.shift();
-  //delay(5000);
-  //x+=2;
+//  delay(5000);
+//  x+=2;
   //}
 
 //
