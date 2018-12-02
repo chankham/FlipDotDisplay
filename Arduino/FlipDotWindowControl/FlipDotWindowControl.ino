@@ -37,7 +37,7 @@ int getCurrent(int pin, int modNum) {
 
 void setModule(int x[25], int modNum) {
   int count = (modNum - 1) * (50) + 6 * (int)(modNum - 1);
-  const int changeAtATime = 5;
+  const int changeAtATime = 10;
   int change[changeAtATime];
   int changeCount = 0;
   //Display(x);
@@ -51,6 +51,7 @@ void setModule(int x[25], int modNum) {
 //    Serial.print(" ");
 //    Serial.println(count);
     if (x[i] && !current[getCurrent(count, modNum)]) {
+      
       current[getCurrent(count, modNum)] = x[i];
 
       change[changeCount++] = count + 1;
@@ -126,7 +127,7 @@ int h[25] =
   0, 1, 0, 1, 0,
   0, 1, 0, 1, 0
 };
-int e[25] =
+int el[25] =
 { 0, 1, 1, 1, 0,
   0, 1, 0, 0, 0,
   0, 1, 1, 1, 0,
@@ -147,6 +148,54 @@ int o[25] =
   0, 1, 0, 1, 0,
   0, 1, 1, 1, 0
 };
+
+int u[25] =
+{ 0, 0, 0, 0, 0,
+  0, 1, 0, 1, 0,
+  0, 1, 0, 1, 0,
+  0, 1, 1, 1, 0,
+  0, 0, 0, 0, 0
+};
+
+int t[25] =
+{ 0, 0, 0, 0, 0,
+  0, 1, 1, 1, 0,
+  0, 0, 1, 0, 0,
+  0, 0, 1, 0, 0,
+  0, 0, 0, 0, 0
+};
+
+int a[25] =
+{ 0, 0, 0, 0, 0,
+  0, 0, 1, 0, 0,
+  0, 1, 0, 1, 0,
+  0, 1, 1, 1, 0,
+  0, 1, 0, 1, 0
+};
+
+int c[25] =
+{ 0, 0, 0, 0, 0,
+  0, 1, 1, 1, 0,
+  0, 1, 0, 0, 0,
+  0, 1, 1, 1, 0,
+  0, 0, 0, 0, 0
+};
+int s[25] =
+{ 0, 1, 1, 1, 0,
+  0, 1, 0, 0, 0,
+  0, 1, 1, 1, 0,
+  0, 0, 0, 1, 0,
+  0, 1, 1, 1, 0
+};
+
+int e[25] =
+{ 0, 0, 0, 0, 0,
+  0, 0, 1, 1, 0,
+  0, 1, 1, 1, 0,
+  0, 1, 0, 0, 0,
+  0, 0, 1, 1, 0
+};
+
 int w[25] =
 { 1, 0, 0, 0, 1,
   1, 0, 0, 0, 1,
@@ -219,6 +268,38 @@ int an5[25] =
   1, 1, 1, 0, 0,
   1, 1, 0, 0, 0,
   1, 0, 0, 0, 0
+};
+int an6[25] =
+{ 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 0,
+  1, 1, 1, 0, 0,
+  1, 1, 0, 0, 0,
+  1, 0, 0, 0, 1
+};
+
+int an7[25] =
+{ 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 0,
+  1, 1, 1, 0, 0,
+  1, 1, 0, 0, 1,
+  1, 0, 0, 1, 1
+};
+
+int an8[25] =
+{ 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 0,
+  1, 1, 1, 0, 1,
+  1, 1, 0, 1, 1,
+  1, 0, 1, 1, 1
+};
+
+
+int an9[25] =
+{ 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1
 };
 
 int one[25] =
@@ -400,10 +481,10 @@ void toggleSecond() {
 
 void arduinoClock() {
   unsigned long time1 = millis();
-  long curr = 906;
+  long curr = 353  ;
   while (1) {
     //toggleSecond();
-    if ( millis() - time1 >= 1000) {
+    if ( millis() - time1 >= 50000) {
       time1 = millis();
       //toggleSecond();
       curr++;
@@ -487,6 +568,21 @@ void setAll() {
   setModule(y, 3);
 }
 
+void utacse(){
+  setModule(c, 1);
+  setModule(s, 2);
+  setModule(e, 3);
+  delay(5000);
+//  setModule(x, 1);
+//  setModule(x, 2);
+//  setModule(x, 3);
+  setModule(u, 1);
+  setModule(t, 2);
+  setModule(a, 3);
+  delay(5000);
+}
+
+
 void animation() {
 
   setModule(an1, 1);
@@ -494,31 +590,55 @@ void animation() {
   setModule(an3, 1);
   setModule(an4, 1);
   setModule(an5, 1);
+  setModule(an6, 1);
+  setModule(an7, 1);
+  setModule(an8, 1);
+  setModule(an9, 1);
+
 
   setModule(an1, 2);
   setModule(an2, 2);
   setModule(an3, 2);
   setModule(an4, 2);
   setModule(an5, 2);
+  setModule(an6, 2);
+  setModule(an7, 2);
+  setModule(an8, 2);
+  setModule(an9, 2);
+
 
   setModule(an1, 3);
   setModule(an2, 3);
   setModule(an3, 3);
   setModule(an4, 3);
   setModule(an5, 3);
+  setModule(an6, 3);
+  setModule(an7, 3);
+  setModule(an8, 3);
+  setModule(an9, 3);
 
+  
+  setModule(an8, 3);
+  setModule(an7, 3);
+  setModule(an6, 3);
   setModule(an5, 3);
   setModule(an4, 3);
   setModule(an3, 3);
   setModule(an2, 3);
   setModule(an1, 3);
-
+  
+  setModule(an8, 2);
+  setModule(an7, 2);
+  setModule(an6, 2);
   setModule(an5, 2);
   setModule(an4, 2);
   setModule(an3, 2);
   setModule(an2, 2);
   setModule(an1, 2);
-
+  
+  setModule(an8, 1);
+  setModule(an7, 1);
+  setModule(an6, 1);
   setModule(an5, 1);
   setModule(an4, 1);
   setModule(an3, 1);
@@ -528,6 +648,7 @@ void animation() {
   setModule(x, 1);
   setModule(x, 2);
   setModule(x, 3);
+  utacse();
 }
 
 
@@ -549,17 +670,21 @@ void setup ()
 
   id = 1;
   clearModules();
+  
   //setWindow(current);
 }
 
+
+
 void loop ()
 {
-
+  //utacse();
   //raspPi();
-    arduinoClock();
-    //clearModules();
-    //setAll();
-  //  helloWorld();
+  // arduinoClock();
+  clearModules();
+    setAll();
+//    helloWorld()
+  //animation();
 
   //S
   //  while (1);
