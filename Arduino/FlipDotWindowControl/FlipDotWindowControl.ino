@@ -1,8 +1,4 @@
 #include <MultiShiftRegister.h>
-#include <SoftwareSerial.h>
-#include <Wire.h>
-
-#define SLAVE_ADDRESS 0x04
 int latchPin = 8;
 int clockPin = 11;
 int dataPin = 12;
@@ -19,8 +15,6 @@ MultiShiftRegister msr (numberOfRegisters, latchPin, clockPin, dataPin);
 int current[75];
 int receive[75];
 int id;
-
-SoftwareSerial softser(2, 3);
 
 void Display(int x[25]) {
   Serial.println("\n\nDisplaying:");
@@ -44,78 +38,58 @@ int getCurrent(int pin, int modNum) {
 void setModule(int x[25], int modNum) {
   int count = (modNum - 1) * (50) + 6 * (int)(modNum - 1);
   const int changeAtATime = 10;
-
   int change[changeAtATime];
-
   int changeCount = 0;
-  int p = 0;
-  
-    changeCount = 0;
-    //Display(x);
+  //Display(x);
+  for (int i = 0; i < changeAtATime; ++i)
+    change[i] = 0;
 
-    for (int i = 0; i < changeAtATime; ++i)
-      change[i] = 0;
+  for (int i = 0; i < 25; ++i) {
+    //Serial.print("Checking Dot, Curr d: ");
+    int c = getCurrent(count, modNum);
+//    Serial.print(c);
+//    Serial.print(" ");
+//    Serial.println(count);
+    if (x[i] && !current[getCurrent(count, modNum)]) {
+      
+      current[getCurrent(count, modNum)] = x[i];
 
-    int inter[2] = {700, 300};
+      change[changeCount++] = count + 1;
+    }
 
-    for (int i = 0; i < 25; ++i) {
-      //Serial.print("Checking Dot, Curr d: ");
-      int c = getCurrent(count, modNum);
-      //      Serial.print(c);
-      //      Serial.print(" ");
-      //      Serial.println(count);
-      if (x[i] && !current[getCurrent(count, modNum)]) {
-        if (p == 1)
-          current[getCurrent(count, modNum)] = x[i];
+    if (!x[i] && current[getCurrent(count, modNum)]) {
+      change[changeCount++] = count;
 
-        change[changeCount++] = count + 1;
-      }
-
-      if (!x[i] && current[getCurrent(count, modNum)]) {
-
-        change[changeCount++] = count;
-        if (p == 1)
-          current[getCurrent(count, modNum)] = x[i];
-      }
-      if (changeCount == changeAtATime || i == 24) {
-while (p < 2) {
-
+      current[getCurrent(count, modNum)] = x[i];
+    }
+    if (changeCount == changeAtATime || i == 24) {
+      int p = 0;
+      int inter[2] = {700, 300};
+      while (p < 2) {
         for (int j = 0; j < changeCount; ++j) {
 
           msr.set_shift(change[j]);
-          if (p == 0) {
-            Serial.print("Changing Dot ");
-          }
-          else
-          {
-            Serial.print("Adjusting Dot ");
-          }
-          Serial.println(change[j]);
-          Serial.print("ChangeCount: ");
-          Serial.println(changeCount);
         }
         delay(inter[p]);
         for (int j = 0; j < changeCount; ++j) {
           msr.clear_shift(change[j]);
         }
         delay(50);
-
-
-
-        for (int j = 0; j < changeAtATime; ++j)
-          change[j] = 0;
-}
-        changeCount = 0;
-      
-
-
-      count += 2;
-
+        //Serial.print("jjjChanging Dot ");
+        //Serial.println(change[j]);
+        //        Serial.print("ChangeCount: ");
+        //        Serial.println(changeCount);
+        p++;
+      }
+      for (int j = 0; j < changeAtATime; ++j)
+        change[j] = 0;
+      p = 0;
+      changeCount = 0;
     }
-    //count = (modNum - 1) * (50) + 6 * (int)(modNum - 1);
-    p++;
+
+    count += 2;
+
   }
-  p = 0;
   //Serial.println("Displayed:\n");
   //Display(x);
   //delay(0);
@@ -557,34 +531,35 @@ void hi() {
   setModule(ex, 3);
 }
 
-void readStdString() {
-  if (softser.available() > 0) {
-    String incoming = softser.readString();
-    Serial.println(incoming);
-    if (id == incoming[1]) {
-      for (int i = 0; i < 75; ++i)
-        receive[i] = incoming[i + 3];
-      if (incoming[78] != '#')
-        error();
-      else
-        setWindow(receive);
-    }
+void readStdString(){
+  if (Serial.available() > 0) {
+        String incoming = Serial.readString();
+        Serial.println(incoming);
+        if(id == incoming[1]){
+          for(int i = 0; i < 75; ++i)
+            receive[i] = incoming[i+3];
+           if(incoming[78] != '#')
+            error();
+           else
+            setWindow(receive);
+          digitalWrite(12, !digitalRead(12));
+        }
   }
 }
 
-void readIntClock() {
+void readIntClock(){
   if (Serial.available() > 0) {
-    long incoming = Serial.parseInt();
-    displayTime(incoming);
+        long incoming = Serial.parseInt();
+        displayTime(incoming);
 
-    Serial.println(incoming);
+        Serial.println(incoming);
   }
 }
 
 void raspPi() {
-  //readIntClock();
-  readStdString();
-
+  readIntClock();
+  //readStdString();
+  
 }
 
 void setAll() {
@@ -593,14 +568,14 @@ void setAll() {
   setModule(y, 3);
 }
 
-void utacse() {
+void utacse(){
   setModule(c, 1);
   setModule(s, 2);
   setModule(e, 3);
   delay(5000);
-  //  setModule(x, 1);
-  //  setModule(x, 2);
-  //  setModule(x, 3);
+//  setModule(x, 1);
+//  setModule(x, 2);
+//  setModule(x, 3);
   setModule(u, 1);
   setModule(t, 2);
   setModule(a, 3);
@@ -642,7 +617,7 @@ void animation() {
   setModule(an8, 3);
   setModule(an9, 3);
 
-
+  
   setModule(an8, 3);
   setModule(an7, 3);
   setModule(an6, 3);
@@ -651,7 +626,7 @@ void animation() {
   setModule(an3, 3);
   setModule(an2, 3);
   setModule(an1, 3);
-
+  
   setModule(an8, 2);
   setModule(an7, 2);
   setModule(an6, 2);
@@ -660,7 +635,7 @@ void animation() {
   setModule(an3, 2);
   setModule(an2, 2);
   setModule(an1, 2);
-
+  
   setModule(an8, 1);
   setModule(an7, 1);
   setModule(an6, 1);
@@ -676,22 +651,6 @@ void animation() {
   utacse();
 }
 
-void receiveData(int byteCount) {
-
-  while (Wire.available()) {
-    int s = Wire.read();
-    Serial.print("data received: ");
-    Serial.println(s);
-  }
-}
-
-// callback for sending data
-void sendData() {
-  Wire.write(123);
-}
-
-int number = 0;
-int state = 0;
 
 void setup ()
 {
@@ -699,25 +658,19 @@ void setup ()
   pinMode (clockPin, OUTPUT);
   pinMode (dataPin, OUTPUT);
   Serial.begin(9600);
-  softser.begin(9600);
-
-  Wire.begin(SLAVE_ADDRESS);
-  Wire.onReceive(receiveData);
-  Wire.onRequest(sendData);
-
   //Serial.println("Current:\n");
   for (int i = 0; i < 75; ++i) {
     current[i] = 1;
     //if (i % 5 == 0 || i % 25 == 0)
-    //Serial.println("");
+      //Serial.println("");
     //Serial.print(current[i]);
     //Serial.print(' ');
 
   }
 
   id = 1;
-  //clearModules();
-
+  clearModules();
+  
   //setWindow(current);
 }
 
@@ -729,9 +682,9 @@ void loop ()
   //raspPi();
   // arduinoClock();
   clearModules();
-  setAll();
-  //    helloWorld()
-//  animation();
+    setAll();
+//    helloWorld()
+  //animation();
 
   //S
   //  while (1);
