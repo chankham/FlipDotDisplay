@@ -6,14 +6,14 @@ int dataPin = 12;
 //// How many 8 bit shift registers we're talking to.
 //# Two 8 bit registers can host 16 individuallly
 //# addressable binary outputs.
-int numberOfRegisters = 21;
+int numberOfRegisters = 42;
 
 //# Setup group of shift registers and name it `msr`.
 //# All outputs are initialized to low/off.
 MultiShiftRegister msr (numberOfRegisters, latchPin, clockPin, dataPin);
 
-int current[75];
-int receive[75];
+int current[150];
+int receive[150];
 int id;
 
 void Display(int x[25]) {
@@ -95,9 +95,9 @@ void setModule(int x[25], int modNum) {
   //delay(0);
 }
 
-void setWindow(int c[75]) {
+void setWindow(int c[150]) {
   int count = 0;
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < 6; i++) {
     int arr[25];
     memcpy(arr, c + count, 25 * sizeof(int));
 
@@ -522,6 +522,9 @@ void clearModules() {
   setModule(x, 1);
   setModule(x, 2);
   setModule(x, 3);
+  setModule(x, 4);
+  setModule(x, 5);
+  setModule(x, 6);
 }
 
 void hi() {
@@ -566,6 +569,9 @@ void setAll() {
   setModule(y, 1);
   setModule(y, 2);
   setModule(y, 3);
+  setModule(y, 4);
+  setModule(y, 5);
+  setModule(y, 6);
 }
 
 void utacse(){

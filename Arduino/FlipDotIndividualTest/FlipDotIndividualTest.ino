@@ -7,7 +7,7 @@ int dataPin = 12;
 // How many 8 bit shift registers we're talking to.
 // Two 8 bit registers can host 16 individually
 // addressable binary outputs.
-int numberOfRegisters = 21;
+int numberOfRegisters = 21; 
 
 // Setup group of shift registers and name it `msr`.
 // All outputs are initialized to low/off.
